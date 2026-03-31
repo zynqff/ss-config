@@ -1,0 +1,35 @@
+name: Sign and Deploy Config
+
+on:
+  push:
+    branches:
+      - main  # или master, в зависимости от твоей ветки
+    paths:
+      - 'config.json'  # только при изменении config.json
+
+jobs:
+  sign-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create private key file
+        run: |
+          echo "${{ secrets.CONFIG_PRIVATE_KEY }}" > private.pem
+
+      - name: Sign config.json with OpenSSL
+        run: |
+          openssl pkeyutl -sign -inkey private.pem -in config.json -out config.sig.bin
+          base64 config.sig.bin > config.sig
+          rm config.sig.bin
+
+      - name: Commit and push signed config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add config.sig
+          git commit -m "Auto-sign config.json [skip ci]" || echo "No changes to commit"
+          git push
