@@ -3,9 +3,9 @@ name: Sign and Deploy Config
 on:
   push:
     branches:
-      - main  # или master, в зависимости от твоей ветки
+      - main
     paths:
-      - 'config.json'  # только при изменении config.json
+      - 'config.json'
 
 jobs:
   sign-and-deploy:
@@ -20,11 +20,16 @@ jobs:
         run: |
           echo "${{ secrets.CONFIG_PRIVATE_KEY }}" > private.pem
 
-      - name: Sign config.json with OpenSSL
-        run: |
-          openssl pkeyutl -sign -inkey private.pem -in config.json -out config.sig.bin
-          base64 config.sig.bin > config.sig
-          rm config.sig.bin
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install cryptography
+        run: pip install cryptography
+
+      - name: Sign config.json
+        run: python sign.py
 
       - name: Commit and push signed config
         run: |
