@@ -2,5 +2,6 @@
   "maintenance": false,
   "maintenance_until": "",
   "message": "Технические работы. Скоро вернёмся!",
-  "api_fingerprint": "7A6D9A612CE8A7DBD290FF5FDD6D8DC288575B8F730DA5F8E625D065CD25AE6E"
+  "api_url": "https://zynqochka-ssback-go.hf.space",
+  "api_fingerprint": "40A62FD7901FD37B87D2E901C7770499040FDE46BDAD73ECBC0E8598BBEBC429"
 }
