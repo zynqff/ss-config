@@ -1,5 +1,5 @@
 {
-  "maintenance": false,
+  "maintenance": true,
   "maintenance_until": "",
   "message": "Технические работы. Скоро вернёмся!",
   "api_url": "https://zynqochka-ssback-go.hf.space",
